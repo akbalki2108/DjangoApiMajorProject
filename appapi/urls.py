@@ -19,5 +19,5 @@ urlpatterns = [
     path('get_voter/<str:epic_id>/', get_voter, name='get_voter'),
     path('get_all_candidates/', get_all_candidates, name='get_all_candidates'),
     path('candidate_count/', candidate_count, name='candidate_count'),
-    
+    #hey i have changed on url
 ]
