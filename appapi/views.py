@@ -7,6 +7,35 @@ from django.http import JsonResponse
 from .models import Voter
 
 @api_view(['GET'])
+def get_all_candidates(request):
+    print("Hey i am in functuon")
+    candidates = Candidate.objects.all()
+
+    data = []
+    print(f'{"Field name":20} {"Column name"}')
+    print(50 * '-')
+    for f in Candidate._meta.fields:
+        print(f'{f.name:20} {f.db_column or f.attname}')
+    for candidate in candidates:
+        print(candidate)
+        candidate_data = {
+            'id':candidate.id,
+            'party': candidate.party,
+            'firstname': candidate.person.firstname,
+            'lastname': candidate.person.lastname,
+            'dob': str(candidate.person.dob),
+            'gender': candidate.person.gender,
+            'adhaar': candidate.person.adhaar,
+            'email': candidate.person.email,
+            'phone': candidate.person.phone,
+            'manifesto': str(candidate.manifesto),
+            'image': str(candidate.image),
+            'accepted': candidate.accepted
+        }
+        data.append(candidate_data)
+    return JsonResponse(data, safe=False)
+
+@api_view(['GET'])
 def get_voter(request, epic_id):
     try:
         voter = Voter.objects.get(epic=epic_id)
@@ -52,6 +81,11 @@ def personvoter(request):
                 return Response({'message': 'Person created successfully'}, status=201)
             except Exception as e:
                 return Response({'error': str(e)}, status=400)
+from django.http import HttpResponse
+
+def candidate_count(request):
+    count_can = Candidate.objects.all().count()
+    return HttpResponse(count_can, content_type='text/plain')
 
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -90,31 +124,6 @@ def create_person_with_candidation(request):
 
     return JsonResponse({'error': 'Method not allowed'}, status=405)
 
-
-def get_all_candidates(request):
-    if request.method == 'GET':
-        candidates = Candidate.objects.all()
-        candidate_list = []
-        for candidate in candidates:
-            candidate_data = {
-                'id': candidate.id,
-                'firstname': candidate.person.firstname,
-                'lastname': candidate.person.lastname,
-                'dob': candidate.person.dob,
-                'gender': candidate.person.gender,
-                'adhaar': candidate.person.adhaar,
-                'email': candidate.person.email,
-                'phone': candidate.person.phone,
-                'candidate_id': candidate.candidate_id,
-                'party': candidate.party,
-                'manifesto': candidate.manifesto.url if candidate.manifesto else None,
-                'image': candidate.image.url if candidate.image else None,
-                'accepted': candidate.accepted
-            }
-            candidate_list.append(candidate_data)
-        return JsonResponse(candidate_list, safe=False)
-    else:
-        return JsonResponse({'error': 'Method not allowed'}, status=405)
 
 
 from rest_framework import status

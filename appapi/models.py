@@ -28,8 +28,9 @@ class Voter(models.Model):
         return self.person.firstname + " " + self.person.lastname + "( " + str(self.person.adhaar) + " )"
 
 class Candidate(models.Model):
+    id = models.AutoField(primary_key=True)
     party = models.CharField(max_length=20)
-    person = models.OneToOneField(Person, on_delete=models.CASCADE, primary_key=True)
+    person = models.OneToOneField(Person, on_delete=models.CASCADE)
     manifesto = models.FileField(upload_to='manifestos/', null=True, blank=True, default='default_pdf.pdf')
     image = models.ImageField(upload_to='profile/', null=True, default='default_image.jpg')
     accepted = models.BooleanField(default=False)

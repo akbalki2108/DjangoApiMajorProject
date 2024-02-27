@@ -4,7 +4,6 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 from .views import *
-from .views import MachineListCreate, MachineRetrieveUpdateDestroy, ElectionDataListCreate, ElectionDataRetrieve
 
 router = DefaultRouter()
 
@@ -18,4 +17,7 @@ urlpatterns = [
     path('electiondata/', ElectionDataListCreate.as_view(), name='electiondata-list-create'),
     path('electiondata/<int:pk>/', ElectionDataRetrieve.as_view(), name='electiondata-retrieve'),
     path('get_voter/<str:epic_id>/', get_voter, name='get_voter'),
+    path('get_all_candidates/', get_all_candidates, name='get_all_candidates'),
+    path('candidate_count/', candidate_count, name='candidate_count'),
+    
 ]
