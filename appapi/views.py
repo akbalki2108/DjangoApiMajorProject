@@ -3,6 +3,30 @@ from .models import Person, Voter, Candidate, Machine, ElectionData
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
+from django.http import JsonResponse
+from .models import Voter
+
+@api_view(['GET'])
+def get_voter(request, epic_id):
+    try:
+        voter = Voter.objects.get(epic=epic_id)
+        data = {
+            'epic_id': voter.epic,
+            'fingerprint': voter.fingerprint,
+            'status': voter.status,
+            'disability': voter.disability,
+            'firstname': voter.person.firstname,
+            'lastname': voter.person.lastname,
+            'dob': str(voter.person.dob),
+            'gender': voter.person.gender,
+            'adhaar': voter.person.adhaar,
+            'email': voter.person.email,
+            'phone': voter.person.phone,
+        }
+        return JsonResponse(data)
+    except Voter.DoesNotExist:
+        return JsonResponse({'error': 'Voter not found'}, status=404)
+
 
 @api_view(['POST'])
 def personvoter(request):
