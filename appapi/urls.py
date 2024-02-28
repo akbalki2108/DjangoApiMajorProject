@@ -20,5 +20,7 @@ urlpatterns = [
     path('get_all_candidates/', get_all_candidates, name='get_all_candidates'),
     path('get_all_voters/', get_all_voters, name='get_all_voters'),
     path('candidate_count/', candidate_count, name='candidate_count'),
+    path('get_all_machines/', get_all_machines, name='get_all_machines'),
+
     #hey i have changed on url
 ]

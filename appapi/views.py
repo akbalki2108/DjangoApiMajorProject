@@ -56,6 +56,8 @@ def get_voter(request, epic_id):
     except Voter.DoesNotExist:
         return JsonResponse({'error': 'Voter not found'}, status=404)
 
+
+
 @api_view(['GET'])
 def get_all_voters(request):
     try:
@@ -83,6 +85,28 @@ def get_all_voters(request):
         return JsonResponse(data,safe=False)
     except Voter.DoesNotExist:
         return JsonResponse({'error': 'Voter not found'}, status=404)
+
+
+@api_view(['GET'])
+def get_all_machines(request):
+    try:
+        machines = Machine.objects.all()
+
+        data = []
+
+        for machine in machines:
+            # print(machine)
+
+            machine_data = {
+                'machine_no': machine.machine_no,
+                'location': machine.location,
+                'local_ip': machine.local_ip,
+            }
+            data.append(machine_data)
+        return JsonResponse(data,safe=False)
+    except Voter.DoesNotExist:
+        return JsonResponse({'error': 'Voter not found'}, status=404)
+
 
 @api_view(['POST'])
 def personvoter(request):
