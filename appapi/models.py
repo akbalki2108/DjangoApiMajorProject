@@ -49,7 +49,7 @@ class Machine(models.Model):
 
 class ElectionData(models.Model):
     epic_id = models.CharField(max_length=20)
-    transaction_no = models.CharField(max_length=50)
+    transaction_no = models.CharField(max_length=100)
     date = models.DateField()
     location = models.CharField(max_length=100)
 
