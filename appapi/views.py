@@ -99,7 +99,7 @@ def get_election_data(request):
             print(ed)
 
             ed_data = {
-                'epic_id': ed.epic,
+                'epic_id': ed.epic_id,
                 'transaction_no': ed.transaction_no,
                 'date': ed.date,
                 'location': ed.location,
