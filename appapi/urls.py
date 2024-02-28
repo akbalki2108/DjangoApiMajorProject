@@ -18,6 +18,7 @@ urlpatterns = [
     path('electiondata/<int:pk>/', ElectionDataRetrieve.as_view(), name='electiondata-retrieve'),
     path('get_voter/<str:epic_id>/', get_voter, name='get_voter'),
     path('get_all_candidates/', get_all_candidates, name='get_all_candidates'),
+    path('get_all_voters/', get_all_voters, name='get_all_voters'),
     path('candidate_count/', candidate_count, name='candidate_count'),
     #hey i have changed on url
 ]

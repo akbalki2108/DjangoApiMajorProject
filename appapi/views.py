@@ -56,6 +56,33 @@ def get_voter(request, epic_id):
     except Voter.DoesNotExist:
         return JsonResponse({'error': 'Voter not found'}, status=404)
 
+@api_view(['GET'])
+def get_all_voters(request):
+    try:
+        voters = Voter.objects.all()
+
+        data = []
+
+        for voter in voters:
+            print(voter)
+
+            voter_data = {
+                'epic_id': voter.epic,
+                'fingerprint': voter.fingerprint,
+                'status': voter.status,
+                'disability': voter.disability,
+                'firstname': voter.person.firstname,
+                'lastname': voter.person.lastname,
+                'dob': str(voter.person.dob),
+                'gender': voter.person.gender,
+                'adhaar': voter.person.adhaar,
+                'email': voter.person.email,
+                'phone': voter.person.phone,
+            }
+            data.append(voter_data)
+        return JsonResponse(data,safe=False)
+    except Voter.DoesNotExist:
+        return JsonResponse({'error': 'Voter not found'}, status=404)
 
 @api_view(['POST'])
 def personvoter(request):
