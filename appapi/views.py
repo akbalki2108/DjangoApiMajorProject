@@ -86,6 +86,25 @@ def get_all_voters(request):
     except Voter.DoesNotExist:
         return JsonResponse({'error': 'Voter not found'}, status=404)
 
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from django.http import JsonResponse
+
+@api_view(['PUT'])
+def update_voter_status(request, epic_id):
+    try:
+        voter = Voter.objects.get(epic=epic_id)
+    except Voter.DoesNotExist:
+        return JsonResponse({"message": "Voter not found"}, status=404)
+
+    # Update the status based on the data sent in the request body
+    new_status = request.data.get('status', voter.status)
+    # Assuming 'status' is a field in your Voter model
+    voter.status = new_status
+    voter.save()
+
+    return JsonResponse({"message": "Voter status updated successfully"}, status=200)
+
 
 @api_view(['GET'])
 def get_all_machines(request):

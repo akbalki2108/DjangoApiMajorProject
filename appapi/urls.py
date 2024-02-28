@@ -10,6 +10,7 @@ router = DefaultRouter()
 urlpatterns = [
     path('', include(router.urls)),
     path('personvoter/',personvoter,name="personvoter"),
+    path('update_voter_status/<str:epic_id>/',update_voter_status, name='update_voter_status'),
     path('create_person_with_candidation/',create_person_with_candidation,name="create_person_with_candidation"),
     path('create_person_with_candidation1/', create_person_with_candidation, name='create_person_with_candidation1'),
     path('machines/', MachineListCreate.as_view(), name='machine-list-create'),
