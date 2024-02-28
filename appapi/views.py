@@ -86,6 +86,29 @@ def get_all_voters(request):
     except Voter.DoesNotExist:
         return JsonResponse({'error': 'Voter not found'}, status=404)
 
+
+
+@api_view(['GET'])
+def get_election_data(request):
+    try:
+        election_data = ElectionData.objects.all()
+
+        data = []
+
+        for ed in election_data:
+            print(ed)
+
+            ed_data = {
+                'epic_id': ed .epic,
+                'transaction_no': ed .transaction_no,
+                'date': ed .date,
+                'location': ed .location,
+            }
+            data.append(ed_data)
+        return JsonResponse(data,safe=False)
+    except Voter.DoesNotExist:
+        return JsonResponse({'error': 'Election data not found'}, status=404)
+
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.http import JsonResponse
