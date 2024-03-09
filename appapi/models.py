@@ -40,7 +40,7 @@ class Candidate(models.Model):
 
 
 class Machine(models.Model):
-    machine_no = models.CharField(max_length=20, unique=True)
+    machine_no = models.CharField(max_length=20, primary_key=True)
     location = models.CharField(max_length=100)
     local_ip = models.CharField(max_length=15)
 
