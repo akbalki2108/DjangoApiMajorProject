@@ -19,4 +19,4 @@ class PersonSerializer(serializers.ModelSerializer):
 class CandidateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Candidate
-        fields = ['party', 'manifesto', 'profile', 'accepted']
+        fields = ['party', 'manifesto', 'image', 'accepted']
