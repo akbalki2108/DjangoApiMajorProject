@@ -180,42 +180,42 @@ def candidate_count(request):
     count_can = Candidate.objects.all().count()
     return HttpResponse(count_can, content_type='text/plain')
 
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-@csrf_exempt
-def create_person_with_candidation(request):
-    if request.method == 'POST':
-        try:
-            # Extract data from the request
-            data = request.POST
+# from django.http import JsonResponse
+# from django.views.decorators.csrf import csrf_exempt
+# @csrf_exempt
+# def create_person_with_candidation(request):
+#     if request.method == 'POST':
+#         try:
+#             # Extract data from the request
+#             data = request.POST
             
-            # Create a person
-            person = Person.objects.create(
-                firstname=data.get('firstname'),
-                lastname=data.get('lastname'),
-                dob=data.get('dob'),
-                gender=data.get('gender'),
-                adhaar=data.get('adhaar'),
-                email=data.get('email'),
-                phone=data.get('phone')
-            )
+#             # Create a person
+#             person = Person.objects.create(
+#                 firstname=data.get('firstname'),
+#                 lastname=data.get('lastname'),
+#                 dob=data.get('dob'),
+#                 gender=data.get('gender'),
+#                 adhaar=data.get('adhaar'),
+#                 email=data.get('email'),
+#                 phone=data.get('phone')
+#             )
             
-            # Create a candidation  
-            print(data.get('image'))
-            candidate = Candidate.objects.create(
-                party=data.get('party'),
-                manifesto=data.get('manifesto'),
-                image=data.get('image'),
-                accepted=data.get('accepted'),
-                person=person
-            )
+#             # Create a candidation  
+#             print(data.get('image'))
+#             candidate = Candidate.objects.create(
+#                 party=data.get('party'),
+#                 manifesto=data.get('manifesto'),
+#                 image=data.get('image'),
+#                 accepted=data.get('accepted'),
+#                 person=person
+#             )
             
-            return JsonResponse({'message': 'Person with candidation created successfully'}, status=201)
+#             return JsonResponse({'message': 'Person with candidation created successfully'}, status=201)
         
-        except Exception as e:
-            return JsonResponse({'error': str(e)}, status=500)
+#         except Exception as e:
+#             return JsonResponse({'error': str(e)}, status=500)
 
-    return JsonResponse({'error': 'Method not allowed'}, status=405)
+#     return JsonResponse({'error': 'Method not allowed'}, status=405)
 
 
 
