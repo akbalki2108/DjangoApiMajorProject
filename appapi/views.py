@@ -8,16 +8,16 @@ from .models import Voter
 
 @api_view(['GET'])
 def get_all_candidates(request):
-    print("Hey i am in functuon")
+    # print("Hey i am in functuon")
     candidates = Candidate.objects.all()
 
     data = []
-    print(f'{"Field name":20} {"Column name"}')
-    print(50 * '-')
+    # print(f'{"Field name":20} {"Column name"}')
+    # print(50 * '-')
     for f in Candidate._meta.fields:
         print(f'{f.name:20} {f.db_column or f.attname}')
     for candidate in candidates:
-        print(candidate)
+        # print(candidate)
         candidate_data = {
             'id':candidate.id,
             'party': candidate.party,
@@ -66,7 +66,7 @@ def get_all_voters(request):
         data = []
 
         for voter in voters:
-            print(voter)
+            # print(voter)
 
             voter_data = {
                 'epic_id': voter.epic,
@@ -96,7 +96,7 @@ def get_election_data(request):
         data = []
 
         for ed in election_data:
-            print(ed)
+            # print(ed)
 
             ed_data = {
                 'epic_id': ed.epic_id,
@@ -264,11 +264,25 @@ class MachineRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
         self.perform_update(serializer)
         return Response(serializer.data)
     
-    
+
 class ElectionDataListCreate(generics.ListCreateAPIView):
     queryset = ElectionData.objects.all()
     serializer_class = ElectionDataSerializer
 
-class ElectionDataRetrieve(generics.RetrieveAPIView):
-    queryset = ElectionData.objects.all()
+
+from rest_framework.exceptions import ValidationError
+from .models import ElectionData
+
+class ElectionDataRetrieve(generics.ListAPIView):
+    # queryset = ElectionData.objects.all()
     serializer_class = ElectionDataSerializer
+    lookup_field = 'date'
+
+    def get_queryset(self):
+        date = self.kwargs.get('date')
+        queryset = ElectionData.objects.filter(date=date)
+        
+        if not queryset.exists():
+            raise ValidationError('No ElectionData instance found for the given date')
+        
+        return queryset
