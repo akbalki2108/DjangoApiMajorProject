@@ -255,6 +255,16 @@ class MachineRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = MachineSerializer
     lookup_field = 'machine_no' 
 
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        # Update only the IP address
+        instance.local_ip = serializer.validated_data.get('local_ip', instance.local_ip)
+        self.perform_update(serializer)
+        return Response(serializer.data)
+    
+    
 class ElectionDataListCreate(generics.ListCreateAPIView):
     queryset = ElectionData.objects.all()
     serializer_class = ElectionDataSerializer
