@@ -541,3 +541,19 @@ def update_toggle_settings(request):
             return JsonResponse({'error': f'Toggle setting "{toggle_name}" does not exist.'}, status=400)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+    
+@api_view(['GET'])
+def get_toggle_settings(request):
+    try:
+        toggle_settings = ToggleSettings.objects.first()
+
+        data = {
+            'election_toggle': toggle_settings.election_toggle,
+            'voter_registration_toggle': toggle_settings.voter_registration_toggle,
+            'candidate_registration_toggle': toggle_settings.candidate_registration_toggle
+        }
+        
+        
+        return JsonResponse(data,safe=False)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
