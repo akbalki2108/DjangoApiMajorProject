@@ -1,7 +1,7 @@
 # # Byte-compiled / optimized / DLL files
-# __pycache__/
-# *.py[cod]
-# *$py.class
+__pycache__/
+*.py[cod]
+*$py.class
 
 # # Distribution / packaging
 # .Python
@@ -58,7 +58,7 @@
 # __pypackages__/
 
 # # Environments
-# .env
+.env
 # .venv
 # env/
 # venv/

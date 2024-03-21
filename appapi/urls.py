@@ -23,6 +23,7 @@ urlpatterns = [
     path('candidate_count/', candidate_count, name='candidate_count'),
     path('get_all_machines/', get_all_machines, name='get_all_machines'),
     path('get_election_data/', get_election_data, name='get_election_data'),
+    path('start_election/', start_election, name='start_election'),
     
     #hey i have changed on url
 ]
