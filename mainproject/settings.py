@@ -13,9 +13,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 from dotenv import load_dotenv
 
-project_folder = os.path.expanduser('/home/aditya2108/DjangoApiMajorProject',)
+project_folder = os.path.expanduser('/home/aditya2108/DjangoApiMajorProject')
 load_dotenv(os.path.join(project_folder, '.env'))
-
 
 # load_dotenv()
 
