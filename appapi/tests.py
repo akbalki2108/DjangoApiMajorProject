@@ -1,21 +1,25 @@
-from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_exempt
-from web3 import Web3
-
-from web3 import Web3, EthereumTesterProvider
-import os
-
-from dotenv import load_dotenv
-import os
-project_folder = os.path.expanduser('/home/aditya2108/DjangoApiMajorProject')
-load_dotenv(os.path.join(project_folder, '.env'))
-# load_dotenv()
-contract_address = os.environ.get('CONTRACT_ADDRESS')
-mywallet = os.environ.get('MY_WALLET')
-myprivatekey = os.environ.get('PRIVATE_KEY')
+# from django.http import HttpResponse
+# from django.views.decorators.csrf import csrf_exempt
+# from web3 import Web3
+# from web3 import Web3, EthereumTesterProvider
 
 
-print(contract_address)
+
+# from appapi.models import ToggleSettings
+# ToggleSettings.objects.create()
+
+
+
+
+# import os
+# from dotenv import load_dotenv
+# project_folder = os.path.expanduser('/home/aditya2108/DjangoApiMajorProject')
+# load_dotenv(os.path.join(project_folder, '.env'))
+# # load_dotenv()
+# contract_address = os.environ.get('CONTRACT_ADDRESS')
+# mywallet = os.environ.get('MY_WALLET')
+# myprivatekey = os.environ.get('PRIVATE_KEY')
+# print(contract_address)
 
 # blockchain_url = 'https://sepolia.infura.io/v3/ab071685741847ff8ab969312efc0cfe'
 
@@ -279,13 +283,13 @@ print(contract_address)
 #     'chainId': chain_id,
 # }
 
-# # signed_txn = w3.eth.account.sign_transaction(txn_params, private_key=pk)
+# signed_txn = w3.eth.account.sign_transaction(txn_params, private_key=pk)
 
-# # # Send the transaction
-# # tx_hash = w3.eth.send_raw_transaction(signed_txn.rawTransaction)
-# # print(tx_hash)
+# # Send the transaction
+# tx_hash = w3.eth.send_raw_transaction(signed_txn.rawTransaction)
+# print(tx_hash)
 
-# # # Wait for the transaction receipt
-# # tx_receipt = w3.eth.wait_for_transaction_receipt(tx_hash)
+# # Wait for the transaction receipt
+# tx_receipt = w3.eth.wait_for_transaction_receipt(tx_hash)
 
-# # print("Transaction successful:", tx_receipt)
+# print("Transaction successful:", tx_receipt)

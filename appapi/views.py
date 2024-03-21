@@ -1,19 +1,25 @@
-from rest_framework import viewsets
-from .models import Person, Voter, Candidate, Machine, ElectionData
+from .models import Person, Voter, Candidate, Machine, ElectionData,ToggleSettings
+from .serializers import PersonSerializer, CandidateSerializer, MachineSerializer, ElectionDataSerializer
+
 from django.http import HttpResponse
-from rest_framework.decorators import api_view
-
 from django.http import JsonResponse
-from .models import Voter
+
+from rest_framework import viewsets
+from rest_framework import status
+from rest_framework import generics
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from rest_framework.exceptions import ValidationError
+
 from django.views.decorators.csrf import csrf_exempt
-
-import os
-
+from django.views.decorators.http import require_POST
 
 from web3 import Web3
-
 from datetime import date
+
+import os
 import time
+
 
 blockchain_url = 'https://sepolia.infura.io/v3/ab071685741847ff8ab969312efc0cfe'
 
@@ -296,7 +302,6 @@ def start_election(request):
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
     
-
 @api_view(['GET'])
 def get_all_candidates(request):
     # print("Hey i am in functuon")
@@ -396,10 +401,6 @@ def get_election_data(request):
     except Voter.DoesNotExist:
         return JsonResponse({'error': 'Election data not found'}, status=404)
 
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from django.http import JsonResponse
-
 @api_view(['PUT'])
 def update_voter_status(request, epic_id):
     try:
@@ -414,7 +415,6 @@ def update_voter_status(request, epic_id):
     voter.save()
 
     return JsonResponse({"message": "Voter status updated successfully"}, status=200)
-
 
 @api_view(['GET'])
 def get_all_machines(request):
@@ -435,7 +435,6 @@ def get_all_machines(request):
         return JsonResponse(data,safe=False)
     except Voter.DoesNotExist:
         return JsonResponse({'error': 'Voter not found'}, status=404)
-
 
 @api_view(['POST'])
 def personvoter(request):
@@ -462,15 +461,10 @@ def personvoter(request):
             except Exception as e:
                 return Response({'error': str(e)}, status=400)
 
+@api_view(['GET'])
 def candidate_count(request):
     count_can = Candidate.objects.all().count()
     return HttpResponse(count_can, content_type='text/plain')
-
-from rest_framework import status
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from .models import Person, Candidate
-from .serializers import PersonSerializer, CandidateSerializer
 
 @api_view(['POST'])
 def create_person_with_candidation(request):
@@ -487,12 +481,6 @@ def create_person_with_candidation(request):
     else:
         return Response({'error': 'Method not allowed'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
     
-
-
-from rest_framework import generics
-from .models import Machine, ElectionData
-from .serializers import MachineSerializer, ElectionDataSerializer
-
 class MachineListCreate(generics.ListCreateAPIView):
     queryset = Machine.objects.all()
     serializer_class = MachineSerializer
@@ -511,14 +499,9 @@ class MachineRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
         self.perform_update(serializer)
         return Response(serializer.data)
     
-
 class ElectionDataListCreate(generics.ListCreateAPIView):
     queryset = ElectionData.objects.all()
     serializer_class = ElectionDataSerializer
-
-
-from rest_framework.exceptions import ValidationError
-from .models import ElectionData
 
 class ElectionDataRetrieve(generics.ListAPIView):
     # queryset = ElectionData.objects.all()
@@ -533,3 +516,28 @@ class ElectionDataRetrieve(generics.ListAPIView):
             raise ValidationError('No ElectionData instance found for the given date')
         
         return queryset
+    
+@api_view(['POST'])
+def update_toggle_settings(request):
+
+    print(request.data)
+    try:
+        toggle_name = request.data.get('toggle_name')
+        toggle_value = request.data.get('toggle_value')
+
+        if toggle_value == 'true':
+            toggle_value = True
+        else:
+            toggle_value = False
+
+        # Update the corresponding toggle setting in the database
+        toggle_settings = ToggleSettings.objects.first()  # Assuming only one instance of ToggleSettings
+
+        if hasattr(toggle_settings, toggle_name):
+            setattr(toggle_settings, toggle_name, toggle_value)
+            toggle_settings.save()
+            return JsonResponse({'message': 'Toggle settings updated successfully.'},status=200)
+        else:
+            return JsonResponse({'error': f'Toggle setting "{toggle_name}" does not exist.'}, status=400)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)

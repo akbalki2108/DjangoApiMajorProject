@@ -55,3 +55,10 @@ class ElectionData(models.Model):
 
     def __str__(self):
         return f"Election Data: EPIC ID - {self.epic_id}, Transaction No. - {self.transaction_no}"
+    
+
+class ToggleSettings(models.Model):
+    election_toggle = models.BooleanField(default=False)
+    voter_registration_toggle = models.BooleanField(default=False)
+    candidate_registration_toggle = models.BooleanField(default=False)
+
