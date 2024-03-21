@@ -248,6 +248,13 @@ def start_election(request):
         _num_machines = machines.count()
         _machine_ids = machine_ids
 
+        print(f"_date: {type(_date)}, {_date}")
+        print(f"_num_candidates: {type(_num_candidates)}, {_num_candidates}")
+        print(f"_candidate_ids: {type(_candidate_ids)}, {_candidate_ids}")
+        print(f"_party_names: {type(_party_names)}, {_party_names}")
+        print(f"_num_machines: {type(_num_machines)}, {_num_machines}")
+        print(f"_machine_ids: {type(_machine_ids)}, {_machine_ids}")
+        
         chain_id = w3.eth.chain_id
 
         txn_params = {
