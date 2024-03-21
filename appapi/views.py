@@ -248,6 +248,16 @@ def start_election(request):
         _num_machines = machines.count()
         _machine_ids = machine_ids
 
+
+        # Convert Python list to array of uint256
+        _candidate_ids = list(map(int, candidate_ids))
+        _machine_ids = list(map(int, machine_ids))
+
+        # Convert Python list to array of string
+        _party_names = list(map(str, candidate_party_names))
+
+
+
         print(f"_date: {type(_date)}, {_date}")
         print(f"_num_candidates: {type(_num_candidates)}, {_num_candidates}")
         print(f"_candidate_ids: {type(_candidate_ids)}, {_candidate_ids}")
