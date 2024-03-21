@@ -22,7 +22,7 @@ if os.environ.get('ENVIRONMENT') != 'local':
     project_folder = os.path.expanduser('/home/aditya2108/DjangoApiMajorProject')
     load_dotenv(os.path.join(project_folder, '.env'))
 else:
-     print("local")
+    print("local")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
