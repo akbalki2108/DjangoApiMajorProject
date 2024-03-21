@@ -2,6 +2,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
+appapi\__pycache__/
 
 # # Distribution / packaging
 # .Python
