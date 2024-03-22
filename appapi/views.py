@@ -26,6 +26,13 @@ blockchain_url = 'https://sepolia.infura.io/v3/ab071685741847ff8ab969312efc0cfe'
 
 contract_abi =[
 	{
+		"inputs": [],
+		"name": "endLastElection",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
 		"inputs": [
 			{
 				"internalType": "uint256",
@@ -110,6 +117,11 @@ contract_abi =[
 				"internalType": "uint256",
 				"name": "numMachines",
 				"type": "uint256"
+			},
+			{
+				"internalType": "bool",
+				"name": "isActive",
+				"type": "bool"
 			}
 		],
 		"stateMutability": "view",
@@ -135,6 +147,19 @@ contract_abi =[
 				"name": "",
 				"type": "string[]"
 			},
+			{
+				"internalType": "uint256[]",
+				"name": "",
+				"type": "uint256[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getAllDates",
+		"outputs": [
 			{
 				"internalType": "uint256[]",
 				"name": "",
@@ -214,6 +239,49 @@ contract_abi =[
 ]
 
 w3 = Web3(Web3.HTTPProvider(blockchain_url))
+
+@csrf_exempt
+def end_election(request):
+    try:
+
+        if not w3.is_connected():
+            return JsonResponse({'error': 'Web3 connection error'}, status=500)
+        
+        contract_address = os.environ.get('CONTRACT_ADDRESS')
+        mywallet = os.environ.get('MY_WALLET')
+        myprivatekey = os.environ.get('PRIVATE_KEY')
+
+        contract_instance = w3.eth.contract(address=contract_address, abi=contract_abi)
+
+        chain_id = w3.eth.chain_id
+
+        txn_params = {
+            'to': contract_instance.address,  
+            'from': mywallet,  # Replace with your wallet address
+            'gas': 3000000,  # Adjust gas limit as necessary
+            'nonce': w3.eth.get_transaction_count(mywallet),
+            'data': contract_instance.encodeABI('endLastElection'),
+            'maxFeePerGas': w3.to_wei(250, 'gwei'),
+            'maxPriorityFeePerGas': w3.to_wei(2, 'gwei'),
+            'chainId': chain_id,
+        }
+        
+        signed_txn = w3.eth.account.sign_transaction(txn_params, private_key=myprivatekey)
+
+        # Send the transaction
+        tx_hash = w3.eth.send_raw_transaction(signed_txn.rawTransaction)
+        # print(tx_hash)
+
+        ToggleSettings.objects.update(election_toggle=False)
+
+        return JsonResponse("Election ended successfully!", status=200,safe = False)
+    except ValueError as ve:
+        return JsonResponse({'error': str(ve)}, status=400)
+    
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
+
 
 @csrf_exempt
 def get_result(request):

@@ -27,6 +27,7 @@ urlpatterns = [
     path('update_toggle_settings/', update_toggle_settings, name='update_toggle_settings'),
     path('get_toggle_settings/', get_toggle_settings, name='get_toggle_settings'),
     path('get_result/', get_result, name='get_result'),
+    path('end_election/', end_election, name='end_election'),
     
     #hey i have changed on url
 ]
