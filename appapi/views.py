@@ -19,6 +19,7 @@ from datetime import date
 
 import os
 import time
+import json
 
 
 blockchain_url = 'https://sepolia.infura.io/v3/ab071685741847ff8ab969312efc0cfe'
@@ -213,6 +214,50 @@ contract_abi =[
 ]
 
 w3 = Web3(Web3.HTTPProvider(blockchain_url))
+
+@csrf_exempt
+def get_result(request):
+
+    try:
+
+        if not w3.is_connected():
+            return JsonResponse({'error': 'Web3 connection error'}, status=500)
+        
+        contract_address = os.environ.get('CONTRACT_ADDRESS')
+        contract_instance = w3.eth.contract(address=contract_address, abi=contract_abi)
+
+
+        body_unicode = request.body.decode('utf-8')
+        body_data = json.loads(body_unicode)
+        find_date = body_data.get('date')
+
+        result = contract_instance.functions.getAllCandidates(int(find_date)).call()
+        
+        formatted_result = []
+
+        if result:
+
+            transposed_result = list(zip(*result))
+
+            for candidate_data in transposed_result:
+                candidate_dict = {
+                    'candidateId': candidate_data[0],
+                    'partyName': candidate_data[1],
+                    'vote': candidate_data[2]
+                }
+                formatted_result.append(candidate_dict)
+
+        return JsonResponse(formatted_result, status=200,safe = False)
+    except ValueError as ve:
+        return JsonResponse({'error': str(ve)}, status=400)
+    
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
+    
+
+    
+    
 
 @csrf_exempt
 def start_election(request):
