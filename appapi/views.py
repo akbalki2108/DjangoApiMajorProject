@@ -240,6 +240,30 @@ contract_abi =[
 
 w3 = Web3(Web3.HTTPProvider(blockchain_url))
 
+
+
+@csrf_exempt
+def get_election_date(request):
+    try:
+
+        if not w3.is_connected():
+            return JsonResponse({'error': 'Web3 connection error'}, status=500)
+        
+        contract_address = os.environ.get('CONTRACT_ADDRESS')
+
+        contract_instance = w3.eth.contract(address=contract_address, abi=contract_abi)
+
+        allDates = contract_instance.functions.getAllDates().call()
+        print(allDates)
+        
+        return JsonResponse({"dates": allDates}, status=200,safe = False)
+    except ValueError as ve:
+        return JsonResponse({'error': str(ve)}, status=400)
+    
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
+
 @csrf_exempt
 def end_election(request):
     try:
