@@ -17,6 +17,7 @@ urlpatterns = [
     path('machines/<int:machine_no>/', MachineRetrieveUpdateDestroy.as_view(), name='machine-retrieve-update-destroy'),
     path('electiondata/', ElectionDataListCreate.as_view(), name='electiondata-list-create'),
     path('electiondata/<str:date>/', ElectionDataRetrieve.as_view(), name='electiondata-retrieve'),
+    path('election-details/<str:date>/', ElectionDetailsRetrieve.as_view(), name='election-details-retrieve'),
     path('get_voter/<str:epic_id>/', get_voter, name='get_voter'),
     path('get_all_candidates/', get_all_candidates, name='get_all_candidates'),
     path('get_all_voters/', get_all_voters, name='get_all_voters'),

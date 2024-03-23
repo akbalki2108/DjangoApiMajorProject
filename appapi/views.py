@@ -1,5 +1,5 @@
 from .models import Person, Voter, Candidate, Machine, ElectionData,ToggleSettings, ElectionDetails
-from .serializers import PersonSerializer, CandidateSerializer, MachineSerializer, ElectionDataSerializer
+from .serializers import PersonSerializer, CandidateSerializer, MachineSerializer, ElectionDataSerializer,ElectionDetailsSerializer
 
 from django.http import HttpResponse
 from django.http import JsonResponse
@@ -448,6 +448,21 @@ class ElectionDataRetrieve(generics.ListAPIView):
         
         return queryset
     
+
+class ElectionDetailsRetrieve(generics.ListAPIView):
+    serializer_class = ElectionDetailsSerializer
+    lookup_field = 'date'
+
+    def get_queryset(self):
+        date = self.kwargs.get('date')
+        queryset = ElectionDetails.objects.filter(date=date)
+        
+        if not queryset.exists():
+            raise ValidationError('No ElectionDetails instance found for the given date')
+        
+        return queryset
+    
+
 @api_view(['POST'])
 def update_toggle_settings(request):
 

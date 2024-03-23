@@ -1,6 +1,6 @@
 # serializers.py
 from rest_framework import serializers
-from .models import Person, Candidate,Machine, ElectionData
+from .models import Person, Candidate,Machine, ElectionData,ElectionDetails
 
 class MachineSerializer(serializers.ModelSerializer):
     class Meta:
@@ -20,3 +20,8 @@ class CandidateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Candidate
         fields = ['party', 'manifesto', 'image', 'accepted']
+
+class ElectionDetailsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ElectionDetails
+        fields = '__all__'
