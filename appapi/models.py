@@ -62,10 +62,6 @@ class ToggleSettings(models.Model):
     voter_registration_toggle = models.BooleanField(default=False)
     candidate_registration_toggle = models.BooleanField(default=False)
 
-
-from django.db import models
-from django.db.models import Count
-
 class ElectionDetails(models.Model):
     date = models.IntegerField(default=0)
     num_candidates = models.IntegerField(default=0)

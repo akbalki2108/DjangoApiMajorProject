@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Person, Voter, Candidate, Machine, ElectionData,ToggleSettings
+from .models import Person, Voter, Candidate, Machine, ElectionData,ToggleSettings,ElectionDetails
 
 # Register your models here.
 admin.site.register(Person)
@@ -16,3 +16,5 @@ class ToggleSettingsAdmin(admin.ModelAdmin):
         obj.save()
         
 admin.site.register(ToggleSettings, ToggleSettingsAdmin)
+
+admin.site.register(ElectionDetails)
