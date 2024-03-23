@@ -1,4 +1,4 @@
-from .models import Person, Voter, Candidate, Machine, ElectionData,ToggleSettings
+from .models import Person, Voter, Candidate, Machine, ElectionData,ToggleSettings, ElectionDetails
 from .serializers import PersonSerializer, CandidateSerializer, MachineSerializer, ElectionDataSerializer
 
 from django.http import HttpResponse
@@ -436,6 +436,14 @@ def start_election(request):
         tx_receipt = w3.eth.wait_for_transaction_receipt(tx_hash)
 
         # print("Transaction successful:", tx_receipt)
+
+        # Saving ElectionDetails instance
+        election_details = ElectionDetails(date=today, num_candidates=_num_candidates,
+                                           candidate_ids=",".join(map(str, candidate_ids)),
+                                           party_names=",".join(candidate_party_names),
+                                           num_machines=_num_machines,
+                                           machine_ids=",".join(map(str, machine_ids)))
+        election_details.save()
         
         return JsonResponse({"message": "Election started successfully!"}, status=200)
     except ValueError as ve:

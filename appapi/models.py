@@ -62,3 +62,50 @@ class ToggleSettings(models.Model):
     voter_registration_toggle = models.BooleanField(default=False)
     candidate_registration_toggle = models.BooleanField(default=False)
 
+
+from django.db import models
+from django.db.models import Count
+
+class ElectionDetails(models.Model):
+    date = models.IntegerField(default=0)
+    num_candidates = models.IntegerField(default=0)
+    candidate_ids = models.TextField(default='')  # Store as comma-separated list
+    party_names = models.TextField(default='')  # Store as comma-separated list
+    num_machines = models.IntegerField(default=0)
+    machine_ids = models.TextField(default='')  # Store as comma-separated list
+
+    @classmethod
+    def create(cls, date):
+        # Calculate necessary details
+        candidates = Candidate.objects.all()
+        candidate_ids = ','.join(str(candidate.id) for candidate in candidates)
+        party_names = ','.join(candidate.party for candidate in candidates)
+        num_candidates = candidates.count()
+
+        machines = Machine.objects.all()
+        machine_ids = ','.join(machine.machine_no for machine in machines)
+        num_machines = machines.count()
+
+        return cls.objects.create(
+            date=date,
+            num_candidates=num_candidates,
+            candidate_ids=candidate_ids,
+            party_names=party_names,
+            num_machines=num_machines,
+            machine_ids=machine_ids
+        )
+
+    # def update_details(self):
+    #     candidates = Candidate.objects.all()
+    #     self.num_candidates = candidates.count()
+    #     self.candidate_ids = ','.join(str(candidate.id) for candidate in candidates)
+    #     self.party_names = ','.join(candidate.party for candidate in candidates)
+
+    #     machines = Machine.objects.all()
+    #     self.num_machines = machines.count()
+    #     self.machine_ids = ','.join(machine.machine_no for machine in machines)
+
+    #     self.save()
+
+    def __str__(self):
+        return f"Election Details - Date: {self.date}, Candidates: {self.num_candidates}, Machines: {self.num_machines}"
