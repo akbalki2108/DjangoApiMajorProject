@@ -24,219 +24,223 @@ import json
 
 blockchain_url = 'https://sepolia.infura.io/v3/ab071685741847ff8ab969312efc0cfe'
 
-contract_abi =[
-	{
-		"inputs": [],
-		"name": "endLastElection",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_date",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_numCandidates",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256[]",
-				"name": "_candidateIds",
-				"type": "uint256[]"
-			},
-			{
-				"internalType": "string[]",
-				"name": "_partyNames",
-				"type": "string[]"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_numMachines",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256[]",
-				"name": "_machineIds",
-				"type": "uint256[]"
-			}
-		],
-		"name": "startElection",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_date",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_machineId",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_candidateId",
-				"type": "uint256"
-			}
-		],
-		"name": "vote",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "elections",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "date",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "numCandidates",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "numMachines",
-				"type": "uint256"
-			},
-			{
-				"internalType": "bool",
-				"name": "isActive",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_date",
-				"type": "uint256"
-			}
-		],
-		"name": "getAllCandidates",
-		"outputs": [
-			{
-				"internalType": "uint256[]",
-				"name": "",
-				"type": "uint256[]"
-			},
-			{
-				"internalType": "string[]",
-				"name": "",
-				"type": "string[]"
-			},
-			{
-				"internalType": "uint256[]",
-				"name": "",
-				"type": "uint256[]"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "getAllDates",
-		"outputs": [
-			{
-				"internalType": "uint256[]",
-				"name": "",
-				"type": "uint256[]"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_date",
-				"type": "uint256"
-			}
-		],
-		"name": "getAllMachines",
-		"outputs": [
-			{
-				"internalType": "uint256[]",
-				"name": "",
-				"type": "uint256[]"
-			},
-			{
-				"internalType": "uint256[]",
-				"name": "",
-				"type": "uint256[]"
-			},
-			{
-				"internalType": "string[]",
-				"name": "",
-				"type": "string[]"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_date",
-				"type": "uint256"
-			}
-		],
-		"name": "getTotalCandidates",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_date",
-				"type": "uint256"
-			}
-		],
-		"name": "getTotalMachines",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	}
-]
+# contract_abi =[
+# 	{
+# 		"inputs": [],
+# 		"name": "endLastElection",
+# 		"outputs": [],
+# 		"stateMutability": "nonpayable",
+# 		"type": "function"
+# 	},
+# 	{
+# 		"inputs": [
+# 			{
+# 				"internalType": "uint256",
+# 				"name": "_date",
+# 				"type": "uint256"
+# 			},
+# 			{
+# 				"internalType": "uint256",
+# 				"name": "_numCandidates",
+# 				"type": "uint256"
+# 			},
+# 			{
+# 				"internalType": "uint256[]",
+# 				"name": "_candidateIds",
+# 				"type": "uint256[]"
+# 			},
+# 			{
+# 				"internalType": "string[]",
+# 				"name": "_partyNames",
+# 				"type": "string[]"
+# 			},
+# 			{
+# 				"internalType": "uint256",
+# 				"name": "_numMachines",
+# 				"type": "uint256"
+# 			},
+# 			{
+# 				"internalType": "uint256[]",
+# 				"name": "_machineIds",
+# 				"type": "uint256[]"
+# 			}
+# 		],
+# 		"name": "startElection",
+# 		"outputs": [],
+# 		"stateMutability": "nonpayable",
+# 		"type": "function"
+# 	},
+# 	{
+# 		"inputs": [
+# 			{
+# 				"internalType": "uint256",
+# 				"name": "_date",
+# 				"type": "uint256"
+# 			},
+# 			{
+# 				"internalType": "uint256",
+# 				"name": "_machineId",
+# 				"type": "uint256"
+# 			},
+# 			{
+# 				"internalType": "uint256",
+# 				"name": "_candidateId",
+# 				"type": "uint256"
+# 			}
+# 		],
+# 		"name": "vote",
+# 		"outputs": [],
+# 		"stateMutability": "nonpayable",
+# 		"type": "function"
+# 	},
+# 	{
+# 		"inputs": [
+# 			{
+# 				"internalType": "uint256",
+# 				"name": "",
+# 				"type": "uint256"
+# 			}
+# 		],
+# 		"name": "elections",
+# 		"outputs": [
+# 			{
+# 				"internalType": "uint256",
+# 				"name": "date",
+# 				"type": "uint256"
+# 			},
+# 			{
+# 				"internalType": "uint256",
+# 				"name": "numCandidates",
+# 				"type": "uint256"
+# 			},
+# 			{
+# 				"internalType": "uint256",
+# 				"name": "numMachines",
+# 				"type": "uint256"
+# 			},
+# 			{
+# 				"internalType": "bool",
+# 				"name": "isActive",
+# 				"type": "bool"
+# 			}
+# 		],
+# 		"stateMutability": "view",
+# 		"type": "function"
+# 	},
+# 	{
+# 		"inputs": [
+# 			{
+# 				"internalType": "uint256",
+# 				"name": "_date",
+# 				"type": "uint256"
+# 			}
+# 		],
+# 		"name": "getAllCandidates",
+# 		"outputs": [
+# 			{
+# 				"internalType": "uint256[]",
+# 				"name": "",
+# 				"type": "uint256[]"
+# 			},
+# 			{
+# 				"internalType": "string[]",
+# 				"name": "",
+# 				"type": "string[]"
+# 			},
+# 			{
+# 				"internalType": "uint256[]",
+# 				"name": "",
+# 				"type": "uint256[]"
+# 			}
+# 		],
+# 		"stateMutability": "view",
+# 		"type": "function"
+# 	},
+# 	{
+# 		"inputs": [],
+# 		"name": "getAllDates",
+# 		"outputs": [
+# 			{
+# 				"internalType": "uint256[]",
+# 				"name": "",
+# 				"type": "uint256[]"
+# 			}
+# 		],
+# 		"stateMutability": "view",
+# 		"type": "function"
+# 	},
+# 	{
+# 		"inputs": [
+# 			{
+# 				"internalType": "uint256",
+# 				"name": "_date",
+# 				"type": "uint256"
+# 			}
+# 		],
+# 		"name": "getAllMachines",
+# 		"outputs": [
+# 			{
+# 				"internalType": "uint256[]",
+# 				"name": "",
+# 				"type": "uint256[]"
+# 			},
+# 			{
+# 				"internalType": "uint256[]",
+# 				"name": "",
+# 				"type": "uint256[]"
+# 			},
+# 			{
+# 				"internalType": "string[]",
+# 				"name": "",
+# 				"type": "string[]"
+# 			}
+# 		],
+# 		"stateMutability": "view",
+# 		"type": "function"
+# 	},
+# 	{
+# 		"inputs": [
+# 			{
+# 				"internalType": "uint256",
+# 				"name": "_date",
+# 				"type": "uint256"
+# 			}
+# 		],
+# 		"name": "getTotalCandidates",
+# 		"outputs": [
+# 			{
+# 				"internalType": "uint256",
+# 				"name": "",
+# 				"type": "uint256"
+# 			}
+# 		],
+# 		"stateMutability": "view",
+# 		"type": "function"
+# 	},
+# 	{
+# 		"inputs": [
+# 			{
+# 				"internalType": "uint256",
+# 				"name": "_date",
+# 				"type": "uint256"
+# 			}
+# 		],
+# 		"name": "getTotalMachines",
+# 		"outputs": [
+# 			{
+# 				"internalType": "uint256",
+# 				"name": "",
+# 				"type": "uint256"
+# 			}
+# 		],
+# 		"stateMutability": "view",
+# 		"type": "function"
+# 	}
+# ]
+
+
+
+contract_abi = os.environ.get('CONTRACT_ABI')
 
 w3 = Web3(Web3.HTTPProvider(blockchain_url))
 
@@ -316,6 +320,7 @@ def get_result(request):
             return JsonResponse({'error': 'Web3 connection error'}, status=500)
         
         contract_address = os.environ.get('CONTRACT_ADDRESS')
+        print(contract_address)
         contract_instance = w3.eth.contract(address=contract_address, abi=contract_abi)
 
 
