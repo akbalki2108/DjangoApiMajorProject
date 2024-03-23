@@ -24,227 +24,9 @@ import json
 
 blockchain_url = 'https://sepolia.infura.io/v3/ab071685741847ff8ab969312efc0cfe'
 
-# contract_abi =[
-# 	{
-# 		"inputs": [],
-# 		"name": "endLastElection",
-# 		"outputs": [],
-# 		"stateMutability": "nonpayable",
-# 		"type": "function"
-# 	},
-# 	{
-# 		"inputs": [
-# 			{
-# 				"internalType": "uint256",
-# 				"name": "_date",
-# 				"type": "uint256"
-# 			},
-# 			{
-# 				"internalType": "uint256",
-# 				"name": "_numCandidates",
-# 				"type": "uint256"
-# 			},
-# 			{
-# 				"internalType": "uint256[]",
-# 				"name": "_candidateIds",
-# 				"type": "uint256[]"
-# 			},
-# 			{
-# 				"internalType": "string[]",
-# 				"name": "_partyNames",
-# 				"type": "string[]"
-# 			},
-# 			{
-# 				"internalType": "uint256",
-# 				"name": "_numMachines",
-# 				"type": "uint256"
-# 			},
-# 			{
-# 				"internalType": "uint256[]",
-# 				"name": "_machineIds",
-# 				"type": "uint256[]"
-# 			}
-# 		],
-# 		"name": "startElection",
-# 		"outputs": [],
-# 		"stateMutability": "nonpayable",
-# 		"type": "function"
-# 	},
-# 	{
-# 		"inputs": [
-# 			{
-# 				"internalType": "uint256",
-# 				"name": "_date",
-# 				"type": "uint256"
-# 			},
-# 			{
-# 				"internalType": "uint256",
-# 				"name": "_machineId",
-# 				"type": "uint256"
-# 			},
-# 			{
-# 				"internalType": "uint256",
-# 				"name": "_candidateId",
-# 				"type": "uint256"
-# 			}
-# 		],
-# 		"name": "vote",
-# 		"outputs": [],
-# 		"stateMutability": "nonpayable",
-# 		"type": "function"
-# 	},
-# 	{
-# 		"inputs": [
-# 			{
-# 				"internalType": "uint256",
-# 				"name": "",
-# 				"type": "uint256"
-# 			}
-# 		],
-# 		"name": "elections",
-# 		"outputs": [
-# 			{
-# 				"internalType": "uint256",
-# 				"name": "date",
-# 				"type": "uint256"
-# 			},
-# 			{
-# 				"internalType": "uint256",
-# 				"name": "numCandidates",
-# 				"type": "uint256"
-# 			},
-# 			{
-# 				"internalType": "uint256",
-# 				"name": "numMachines",
-# 				"type": "uint256"
-# 			},
-# 			{
-# 				"internalType": "bool",
-# 				"name": "isActive",
-# 				"type": "bool"
-# 			}
-# 		],
-# 		"stateMutability": "view",
-# 		"type": "function"
-# 	},
-# 	{
-# 		"inputs": [
-# 			{
-# 				"internalType": "uint256",
-# 				"name": "_date",
-# 				"type": "uint256"
-# 			}
-# 		],
-# 		"name": "getAllCandidates",
-# 		"outputs": [
-# 			{
-# 				"internalType": "uint256[]",
-# 				"name": "",
-# 				"type": "uint256[]"
-# 			},
-# 			{
-# 				"internalType": "string[]",
-# 				"name": "",
-# 				"type": "string[]"
-# 			},
-# 			{
-# 				"internalType": "uint256[]",
-# 				"name": "",
-# 				"type": "uint256[]"
-# 			}
-# 		],
-# 		"stateMutability": "view",
-# 		"type": "function"
-# 	},
-# 	{
-# 		"inputs": [],
-# 		"name": "getAllDates",
-# 		"outputs": [
-# 			{
-# 				"internalType": "uint256[]",
-# 				"name": "",
-# 				"type": "uint256[]"
-# 			}
-# 		],
-# 		"stateMutability": "view",
-# 		"type": "function"
-# 	},
-# 	{
-# 		"inputs": [
-# 			{
-# 				"internalType": "uint256",
-# 				"name": "_date",
-# 				"type": "uint256"
-# 			}
-# 		],
-# 		"name": "getAllMachines",
-# 		"outputs": [
-# 			{
-# 				"internalType": "uint256[]",
-# 				"name": "",
-# 				"type": "uint256[]"
-# 			},
-# 			{
-# 				"internalType": "uint256[]",
-# 				"name": "",
-# 				"type": "uint256[]"
-# 			},
-# 			{
-# 				"internalType": "string[]",
-# 				"name": "",
-# 				"type": "string[]"
-# 			}
-# 		],
-# 		"stateMutability": "view",
-# 		"type": "function"
-# 	},
-# 	{
-# 		"inputs": [
-# 			{
-# 				"internalType": "uint256",
-# 				"name": "_date",
-# 				"type": "uint256"
-# 			}
-# 		],
-# 		"name": "getTotalCandidates",
-# 		"outputs": [
-# 			{
-# 				"internalType": "uint256",
-# 				"name": "",
-# 				"type": "uint256"
-# 			}
-# 		],
-# 		"stateMutability": "view",
-# 		"type": "function"
-# 	},
-# 	{
-# 		"inputs": [
-# 			{
-# 				"internalType": "uint256",
-# 				"name": "_date",
-# 				"type": "uint256"
-# 			}
-# 		],
-# 		"name": "getTotalMachines",
-# 		"outputs": [
-# 			{
-# 				"internalType": "uint256",
-# 				"name": "",
-# 				"type": "uint256"
-# 			}
-# 		],
-# 		"stateMutability": "view",
-# 		"type": "function"
-# 	}
-# ]
-
-
-
 contract_abi = os.environ.get('CONTRACT_ABI')
 
 w3 = Web3(Web3.HTTPProvider(blockchain_url))
-
-
 
 @csrf_exempt
 def get_election_date(request):
@@ -266,7 +48,6 @@ def get_election_date(request):
     
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
-
 
 @csrf_exempt
 def end_election(request):
@@ -309,8 +90,6 @@ def end_election(request):
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
 
-
-
 @csrf_exempt
 def get_result(request):
 
@@ -351,11 +130,6 @@ def get_result(request):
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
 
-    
-
-    
-    
-
 @csrf_exempt
 def start_election(request):
 
@@ -389,6 +163,13 @@ def start_election(request):
 
 
         # Example parameters
+        # _date = 1648876800
+        # _num_candidates = 3
+        # _candidate_ids = [1, 2, 3]
+        # _party_names = ["Party A", "Party B", "Party C"]
+        # _num_machines = 2
+        # _machine_ids = [101, 102]
+
         _date = unix_timestamp
         _num_candidates = candidates.count()
         _candidate_ids = candidate_ids
@@ -406,12 +187,12 @@ def start_election(request):
 
 
 
-        print(f"_date: {type(_date)}, {_date}")
-        print(f"_num_candidates: {type(_num_candidates)}, {_num_candidates}")
-        print(f"_candidate_ids: {type(_candidate_ids)}, {_candidate_ids}")
-        print(f"_party_names: {type(_party_names)}, {_party_names}")
-        print(f"_num_machines: {type(_num_machines)}, {_num_machines}")
-        print(f"_machine_ids: {type(_machine_ids)}, {_machine_ids}")
+        # print(f"_date: {type(_date)}, {_date}")
+        # print(f"_num_candidates: {type(_num_candidates)}, {_num_candidates}")
+        # print(f"_candidate_ids: {type(_candidate_ids)}, {_candidate_ids}")
+        # print(f"_party_names: {type(_party_names)}, {_party_names}")
+        # print(f"_num_machines: {type(_num_machines)}, {_num_machines}")
+        # print(f"_machine_ids: {type(_machine_ids)}, {_machine_ids}")
         
         chain_id = w3.eth.chain_id
 
@@ -438,7 +219,7 @@ def start_election(request):
         # print("Transaction successful:", tx_receipt)
 
         # Saving ElectionDetails instance
-        election_details = ElectionDetails(date=today, num_candidates=_num_candidates,
+        election_details = ElectionDetails(date=_date, num_candidates=_num_candidates,
                                            candidate_ids=",".join(map(str, candidate_ids)),
                                            party_names=",".join(candidate_party_names),
                                            num_machines=_num_machines,
