@@ -39,7 +39,7 @@ def get_election_date(request):
 
         contract_instance = w3.eth.contract(address=contract_address, abi=contract_abi)
 
-        allDates = contract_instance.functions.getAllDates().call()
+        allDates = contract_instance.functions.getAllInactiveDates().call()
         print(allDates)
         
         return JsonResponse({"dates": allDates}, status=200,safe = False)
