@@ -368,7 +368,7 @@ def get_all_machines(request):
         return JsonResponse({'error': 'Voter not found'}, status=404)
 
 @api_view(['POST'])
-def addCard(request):
+def add_card(request):
         if request.method == 'POST':
             data = request.data
 

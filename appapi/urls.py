@@ -30,6 +30,7 @@ urlpatterns = [
     path('get_election_date/', get_election_date, name='get_election_date'),
     path('get_result/', get_result, name='get_result'),
     path('end_election/', end_election, name='end_election'),
+    path('add_card/', add_card, name='add_card'),
     
     #hey i have changed on url
 ]
