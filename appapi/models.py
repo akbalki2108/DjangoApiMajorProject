@@ -104,5 +104,5 @@ class ElectionDetails(models.Model):
 
 
 class EpicIdData(models.Model):
-    epic_id = models.CharField(max_length=20)
+    epic_id = models.CharField(max_length=20,primary_key=True)
     allotted = models.BooleanField(default=False)
