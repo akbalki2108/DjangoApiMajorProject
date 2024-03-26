@@ -1,6 +1,6 @@
 # serializers.py
 from rest_framework import serializers
-from .models import Person, Candidate,Machine, ElectionData,ElectionDetails
+from .models import Person, Candidate,Machine, ElectionData,ElectionDetails,EpicIdData
 
 class MachineSerializer(serializers.ModelSerializer):
     class Meta:
@@ -24,4 +24,10 @@ class CandidateSerializer(serializers.ModelSerializer):
 class ElectionDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = ElectionDetails
+        fields = '__all__'
+
+
+class EpicIdDataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EpicIdData
         fields = '__all__'

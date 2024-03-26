@@ -1,5 +1,5 @@
-from .models import Person, Voter, Candidate, Machine, ElectionData,ToggleSettings, ElectionDetails
-from .serializers import PersonSerializer, CandidateSerializer, MachineSerializer, ElectionDataSerializer,ElectionDetailsSerializer
+from .models import Person, Voter, Candidate, Machine, ElectionData,ToggleSettings, ElectionDetails,EpicIdData
+from .serializers import PersonSerializer, CandidateSerializer, MachineSerializer, ElectionDataSerializer,ElectionDetailsSerializer,EpicIdDataSerializer
 
 from django.http import HttpResponse
 from django.http import JsonResponse
@@ -366,6 +366,23 @@ def get_all_machines(request):
         return JsonResponse(data,safe=False)
     except Voter.DoesNotExist:
         return JsonResponse({'error': 'Voter not found'}, status=404)
+
+@api_view(['POST'])
+def addCard(request):
+        if request.method == 'POST':
+            data = request.data
+
+            try:
+
+                epicId = EpicIdData.objects.create(
+                            epic_id = data['epic_id'],
+                        )
+                
+                return Response({'message': 'Card added successfully'}, status=201)
+            except Exception as e:
+                return Response({'error': str(e)}, status=400)
+
+
 
 @api_view(['POST'])
 def personvoter(request):

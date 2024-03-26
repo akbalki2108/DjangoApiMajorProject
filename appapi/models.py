@@ -101,3 +101,8 @@ class ElectionDetails(models.Model):
 
     def __str__(self):
         return f"Election Details - Date: {self.date}, Candidates: {self.num_candidates}, Machines: {self.num_machines}"
+
+
+class EpicIdData(models.Model):
+    epic_id = models.CharField(max_length=20)
+    allotted = models.BooleanField(default=False)
