@@ -367,6 +367,26 @@ def get_all_machines(request):
     except Voter.DoesNotExist:
         return JsonResponse({'error': 'Voter not found'}, status=404)
 
+from random import choice
+
+@api_view(['GET'])
+def get_epicid(request):
+    if request.method == 'GET':
+        try:
+            unallotted_epicids = EpicIdData.objects.filter(allotted=False)
+            
+            if unallotted_epicids.exists():
+                random_epicid = choice(unallotted_epicids).epic_id
+                return Response({'random_epicid': random_epicid}, status=200)
+            else:
+                return Response({'error': 'No unallotted epic ids available'}, status=404)
+        except Exception as e:
+            return Response({'error': str(e)}, status=400)
+
+
+
+
+
 @api_view(['POST'])
 def add_card(request):
         if request.method == 'POST':
@@ -405,6 +425,11 @@ def personvoter(request):
                     disability=data.get('disability', False),  # Default False if disability not provided
                     person=person  # Assign the created person to the voter
                 )
+                
+                epic_id_data = EpicIdData.objects.get(epic_id=data['epic'])
+                epic_id_data.allotted = True
+                epic_id_data.save()
+                
                 return Response({'message': 'Person created successfully'}, status=201)
             except Exception as e:
                 return Response({'error': str(e)}, status=400)
