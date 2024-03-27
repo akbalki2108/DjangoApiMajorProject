@@ -463,8 +463,32 @@ def delete_all_candidates(request):
         return JsonResponse({'message': 'All candidates deleted successfully'}, status=200)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+
+@api_view(['PUT'])
+def accept_candidate(request, candidate_id):
+    try:
+        candidate = Candidate.objects.get(id=candidate_id)
+        candidate.accepted = True
+        candidate.save()
+        return JsonResponse({'message': f'Candidate {candidate_id} accepted successfully'}, status=200)
+    except Candidate.DoesNotExist:
+        return JsonResponse({'error': f'Candidate with id {candidate_id} does not exist'}, status=404)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
+
+@api_view(['DELETE'])
+def delete_candidate(request, candidate_id):
+    try:
+        candidate = Candidate.objects.get(id=candidate_id)
+        candidate.delete()
+        return JsonResponse({'message': f'Candidate {candidate_id} deleted successfully'}, status=200)
+    except Candidate.DoesNotExist:
+        return JsonResponse({'error': f'Candidate with id {candidate_id} does not exist'}, status=404)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
     
-    
+
 class MachineListCreate(generics.ListCreateAPIView):
     queryset = Machine.objects.all()
     serializer_class = MachineSerializer
