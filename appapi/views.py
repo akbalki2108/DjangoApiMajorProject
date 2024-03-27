@@ -454,6 +454,17 @@ def create_person_with_candidation(request):
     else:
         return Response({'error': 'Method not allowed'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
     
+
+@api_view(['DELETE'])
+def delete_all_candidates(request):
+    try:
+        candidates = Candidate.objects.all()
+        candidates.delete()
+        return JsonResponse({'message': 'All candidates deleted successfully'}, status=200)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+    
+    
 class MachineListCreate(generics.ListCreateAPIView):
     queryset = Machine.objects.all()
     serializer_class = MachineSerializer

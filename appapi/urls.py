@@ -32,6 +32,7 @@ urlpatterns = [
     path('end_election/', end_election, name='end_election'),
     path('add_card/', add_card, name='add_card'),
     path('get_epicid/', get_epicid, name='get_epicid'),
+    path('delete_all_candidates/', delete_all_candidates, name='delete_all_candidates'),
     
     #hey i have changed on url
 ]
