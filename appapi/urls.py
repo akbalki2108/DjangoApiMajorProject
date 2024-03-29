@@ -34,7 +34,6 @@ urlpatterns = [
     path('get_epicid/', get_epicid, name='get_epicid'),
     path('delete_all_candidates/', delete_all_candidates, name='delete_all_candidates'),
     path('accept_candidate/<int:candidate_id>/', accept_candidate, name='accept_candidate'),
-    path('delete_candidate/', delete_candidate, name='delete_candidate'),
-    
+    path('delete_candidate/<int:candidate_id>/', delete_candidate, name='delete_candidate'),
     #hey i have changed on url
 ]
