@@ -511,6 +511,25 @@ class ElectionDataListCreate(generics.ListCreateAPIView):
     queryset = ElectionData.objects.all()
     serializer_class = ElectionDataSerializer
 
+    def create(self, request, *args, **kwargs):
+        # First, let's handle creating the ElectionData
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+
+            # Now, let's update the voter status if epic_id is provided
+            epic_id = serializer.validated_data.get('epic_id')
+            if epic_id:
+                try:
+                    voter = Voter.objects.get(epic=epic_id)
+                    voter.status = "Updated Status"  # You should replace this with your logic to update status
+                    voter.save()
+                except Voter.DoesNotExist:
+                    pass  # Handle the case where voter with epic_id doesn't exist
+
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 class ElectionDataRetrieve(generics.ListAPIView):
     # queryset = ElectionData.objects.all()
     serializer_class = ElectionDataSerializer

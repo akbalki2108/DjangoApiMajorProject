@@ -87,18 +87,6 @@ class ElectionDetails(models.Model):
             machine_ids=machine_ids
         )
 
-    # def update_details(self):
-    #     candidates = Candidate.objects.all()
-    #     self.num_candidates = candidates.count()
-    #     self.candidate_ids = ','.join(str(candidate.id) for candidate in candidates)
-    #     self.party_names = ','.join(candidate.party for candidate in candidates)
-
-    #     machines = Machine.objects.all()
-    #     self.num_machines = machines.count()
-    #     self.machine_ids = ','.join(machine.machine_no for machine in machines)
-
-    #     self.save()
-
     def __str__(self):
         return f"Election Details - Date: {self.date}, Candidates: {self.num_candidates}, Machines: {self.num_machines}"
 
