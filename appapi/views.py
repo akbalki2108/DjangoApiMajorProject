@@ -517,7 +517,6 @@ class ElectionDataListCreate(generics.ListCreateAPIView):
         if serializer.is_valid():
 
             machine_no = serializer.validated_data.get('machine_no')
-            location = None
             if machine_no:
                 try:
                     machine = Machine.objects.get(machine_no=machine_no)
