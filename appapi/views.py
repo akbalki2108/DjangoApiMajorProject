@@ -522,7 +522,7 @@ class ElectionDataListCreate(generics.ListCreateAPIView):
             if epic_id:
                 try:
                     voter = Voter.objects.get(epic=epic_id)
-                    voter.status = "Updated Status"  # You should replace this with your logic to update status
+                    voter.status = 1  # You should replace this with your logic to update status
                     voter.save()
                 except Voter.DoesNotExist:
                     pass  # Handle the case where voter with epic_id doesn't exist
