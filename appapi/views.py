@@ -515,13 +515,8 @@ class ElectionDataListCreate(generics.ListCreateAPIView):
         # First, let's handle creating the ElectionData
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
-
-            # Now, let's update the voter status if epic_id is provided
-            epic_id = serializer.validated_data.get('epic_id')
+            
             machine_no = serializer.validated_data.get('machine_no')
-
-
             if machine_no:
                 try:
                     machine = Machine.objects.get(machine_no=machine_no)
@@ -530,6 +525,11 @@ class ElectionDataListCreate(generics.ListCreateAPIView):
                 except Machine.DoesNotExist:
                     pass  # Handle the case where machine with machine_no doesn't exist
 
+            serializer.save(location=location)
+            # serializer.save()
+
+            # Now, let's update the voter status if epic_id is provided
+            epic_id = serializer.validated_data.get('epic_id')
 
             if epic_id:
                 try:
