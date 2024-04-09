@@ -507,6 +507,8 @@ class MachineRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
         self.perform_update(serializer)
         return Response(serializer.data)
     
+
+from django.http import Http404
 class ElectionDataListCreate(generics.ListCreateAPIView):
     queryset = ElectionData.objects.all()
     serializer_class = ElectionDataSerializer
@@ -515,23 +517,26 @@ class ElectionDataListCreate(generics.ListCreateAPIView):
         # First, let's handle creating the ElectionData
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
+            epic_id = serializer.validated_data.get('epic_id')
+            machine_no = request.data.get('machine_no')
+            print(machine_no)
+            location = None  # Initialize location to None
 
-            machine_no = serializer.validated_data.get('machine_no')
-            location = "location"
             if machine_no:
                 try:
                     machine = Machine.objects.get(machine_no=machine_no)
                     location = machine.location
-                    # serializer.save(location=location)
                 except Machine.DoesNotExist:
-                    pass  # Handle the case where machine with machine_no doesn't exist
-
-            serializer.save(location=location)
-            # serializer.save()
-
-            # Now, let's update the voter status if epic_id is provided
-            epic_id = serializer.validated_data.get('epic_id')
-
+                    raise Http404("Machine matching query does not exist.")            
+            # Ensure location is not None
+            if location is None:
+                location = ""  # Set a default value for location if it's None
+            
+            serializer.validated_data['location'] = location  # Update location in validated data
+            
+            # Continue with saving the serializer
+            serializer.save()
+            
             if epic_id:
                 try:
                     voter = Voter.objects.get(epic=epic_id)
