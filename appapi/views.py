@@ -515,13 +515,14 @@ class ElectionDataListCreate(generics.ListCreateAPIView):
         # First, let's handle creating the ElectionData
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
-            
+
             machine_no = serializer.validated_data.get('machine_no')
+            location = None
             if machine_no:
                 try:
                     machine = Machine.objects.get(machine_no=machine_no)
                     location = machine.location
-                    serializer.save(location=location)
+                    # serializer.save(location=location)
                 except Machine.DoesNotExist:
                     pass  # Handle the case where machine with machine_no doesn't exist
 
