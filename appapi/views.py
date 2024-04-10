@@ -507,7 +507,8 @@ class MachineRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
         self.perform_update(serializer)
         return Response(serializer.data)
     
-
+from django.core.mail import send_mail
+from django.conf import settings
 from django.http import Http404
 class ElectionDataListCreate(generics.ListCreateAPIView):
     queryset = ElectionData.objects.all()
@@ -542,6 +543,15 @@ class ElectionDataListCreate(generics.ListCreateAPIView):
                     voter = Voter.objects.get(epic=epic_id)
                     voter.status = 1  # You should replace this with your logic to update status
                     voter.save()
+                    print(voter.person.email)
+                    send_mail(
+                       'Your vote has been recorded',
+                        'Dear voter, your vote has been successfully recorded.',
+                        'settings.EMAIL_HOST_USER',  # Use a no-reply email address
+                        [voter.person.email],
+                        fail_silently=False
+                    )
+                    
                 except Voter.DoesNotExist:
                     pass  # Handle the case where voter with epic_id doesn't exist
 

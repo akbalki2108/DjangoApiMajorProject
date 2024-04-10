@@ -40,6 +40,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -147,3 +148,13 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # URL for serving media files
 MEDIA_URL = '/media/'
+
+
+# Email configuration
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # Your SMTP server address
+EMAIL_PORT = 587  # Your SMTP server port (usually 587 for TLS/STARTTLS)
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')  # Your SMTP username
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')  # Your SMTP password
+EMAIL_USE_TLS = True  # Set to True if your SMTP server requires TLS/STARTTLS
+EMAIL_USE_SSL = False  # Set to True if your SMTP server requires SSL
