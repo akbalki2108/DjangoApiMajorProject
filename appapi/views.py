@@ -25,6 +25,10 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.http import Http404
 
+from django.db.models import Count, Sum
+
+import datetime
+from datetime import date, timedelta
 
 blockchain_url = 'https://sepolia.infura.io/v3/ab071685741847ff8ab969312efc0cfe'
 
@@ -735,3 +739,216 @@ def get_toggle_settings(request):
         return JsonResponse(data,safe=False)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+    
+
+@api_view(['GET'])
+def analysis(request,_date):
+    try:
+        date_unix=int(_date)
+        print("unix date : ", date_unix)
+
+        dt = datetime.datetime.fromtimestamp(date_unix)
+        print("Formated date : ", dt)
+
+        date_only = dt.date()
+        print("Date only: ", date_only)
+
+        today_date = date.today()
+        print("Current Date: ",today_date)
+
+
+        # Candidate Performance Analysis:
+
+        if not w3.is_connected():
+            return JsonResponse({'error': 'Web3 connection error'}, status=500)
+        
+        contract_address = os.environ.get('CONTRACT_ADDRESS')
+        # print("Contract Address : ",contract_address)
+        contract_instance = w3.eth.contract(address=contract_address, abi=contract_abi)
+
+        result = contract_instance.functions.getAllCandidates(date_unix).call()
+        machine_details = contract_instance.functions.getAllMachines(date_unix).call()
+
+        formatted_result = []
+        formatted_result_machine = []
+
+        if result:
+
+            transposed_result = list(zip(*result))
+
+            for candidate_data in transposed_result:
+                candidate_dict = {
+                    'candidateId': candidate_data[0],
+                    'partyName': candidate_data[1],
+                    'vote': candidate_data[2]
+                }
+                formatted_result.append(candidate_dict)
+
+            # print(formatted_result)
+
+        if machine_details:
+            transposed_result = list(zip(*machine_details))
+
+            for machine_data in transposed_result:
+                machine_dict = {
+                    'machineId': machine_data[0],
+                    'vote': machine_data[1],
+                }
+                formatted_result_machine.append(machine_dict)
+
+
+        candidate_votes = formatted_result
+
+        total_votes_cast = sum(candidate['vote'] for candidate in formatted_result)
+        candidate_vote_shares = {}
+        for candidate in candidate_votes:
+            if total_votes_cast > 0:
+                vote_share = (candidate['vote'] / total_votes_cast) * 100
+            else:
+                vote_share = 0
+            candidate_vote_shares[candidate['candidateId']] = vote_share
+
+        winning_candidates = max(candidate_votes, key=lambda x: x['vote'])
+
+
+        # Voter Turnout Analysis:
+
+        registered_voters = Voter.objects.all()
+        total_registered_voters = registered_voters.count()
+
+        votes_cast = ElectionData.objects.filter(date = date_only).count()
+
+        if total_registered_voters > 0:
+            voter_turnout_percentage = (votes_cast / total_registered_voters) * 100
+        else:
+            voter_turnout_percentage = 0
+
+        election_details = ElectionDetails.objects.filter(date = date_unix).first()
+        total_candidates = election_details.num_candidates
+
+        if election_details:
+            total_candidates = election_details.num_candidates
+        else:
+            total_candidates = 0
+
+        # Age Analysis:
+        age_list = []
+        age_distribution = registered_voters.values('person__dob')
+        for entry in age_distribution:
+            dob = entry['person__dob']
+            age = (today_date - dob) // timedelta(days=365.25)  # Calculate age in years
+            age_list.append(age)
+        
+       
+
+        # Gender Analysis:
+        male=0
+        female=0
+        other=0
+        gender_distribution = registered_voters.values('person__gender')
+        for entry in gender_distribution:
+            if entry['person__gender'] == 'Male':
+                male+=1
+            elif entry['person__gender'] == 'Female':
+                female+=1
+            else:
+                other+=1
+            
+        gender_distribution={
+            'male':male,
+            'female':female,
+            'other':other
+        }
+
+
+        # Location Analysis:
+        machine_details=formatted_result_machine
+        machine = Machine.objects.all()
+        machine_vote_count = {}
+        location_vote_count = {}
+
+        for m in machine_details:
+            machine_id = m['machineId']
+            vote_count = m['vote']
+            
+            for machine_obj in machine:
+                if machine_obj.machine_no == str(machine_id):
+                    location = machine_obj.location
+                    break
+            
+            location_vote_count[location] = vote_count
+            machine_vote_count[machine_id] = vote_count
+
+
+        # Print the results
+        print("\nTotal Registered Voters:", total_registered_voters)
+        print("Votes Cast:", votes_cast)
+        print("Voter Turnout Percentage:", voter_turnout_percentage)
+        
+        print("\nTotal Registered Candidates", total_candidates)
+
+        print("\nCandidate-wise Performance:")
+        for candidate_id, vote_share in candidate_vote_shares.items():
+            print(f"Candidate ID: {candidate_id}, Vote Share: {vote_share:.2f}% of total votes")
+
+        print("\nWinning Candidate(s):")
+        print(f"Candidate ID: {winning_candidates['candidateId']}, Party Name: {winning_candidates['partyName']}, Votes: {winning_candidates['vote']}")
+        
+
+        print("\nAge Distribution", age_list)
+        print("Gender Distribution", gender_distribution)
+        print("Location Analysis",machine_vote_count)
+
+        data = {
+            "total_registered_voters":total_registered_voters,
+            "votes_cast":votes_cast,
+            "voter_turnout_percentage":voter_turnout_percentage,
+            "total_candidates":total_candidates,
+            "candidate_vote_shares":candidate_vote_shares,
+            "winning_candidates":winning_candidates,
+            "age_list":age_list,
+            "gender_distribution":gender_distribution,
+            "machine_vote_count":machine_vote_count,
+            "location_vote_count":location_vote_count
+        }
+
+        #Geospatial Analysis:
+
+        # Plot the locations of polling stations on a map.
+        # Analyze voter turnout and candidate performance by geographic area.
+        # Identify areas with high or low voter participation rates.
+        
+        # Election Process Analysis:
+
+        # Analyze the efficiency of the election process, such as the time taken for voter registration, voting, and result tabulation.
+        # Identify any bottlenecks or issues in the election process.
+        # Evaluate the effectiveness of election procedures and policies.
+        
+        # Machine Utilization Analysis:
+
+        # Analyze the utilization of voting machines across different polling stations.
+        # Calculate the average number of voters served per machine.
+        # Identify any issues or inefficiencies in machine deployment or usage.
+        
+        # Election Trend Analysis:
+
+        # Analyze historical election data to identify long-term trends in voter behavior, candidate performance, and voter turnout.
+        # Predict future election outcomes based on past trends and patterns.
+        
+        # Election Integrity Analysis:
+
+        # Analyze the integrity of the election process, including the accuracy of voter registration data, vote counting procedures, and security measures.
+        # Identify any irregularities or anomalies in the election data that may indicate potential fraud or misconduct.
+
+        
+        return JsonResponse(data,safe=False)
+    except Exception as e:
+        return JsonResponse({'error to get analysis': str(e)}, status=500)
+
+@api_view(['GET'])
+def audit(request):
+    pass
+
+
+
+

@@ -35,5 +35,8 @@ urlpatterns = [
     path('delete_all_candidates/', delete_all_candidates, name='delete_all_candidates'),
     path('accept_candidate/<int:candidate_id>/', accept_candidate, name='accept_candidate'),
     path('delete_candidate/<int:candidate_id>/', delete_candidate, name='delete_candidate'),
+    path('analysis/<str:_date>', analysis, name='analysis'),
+    path('audit/<str:_date>', audit, name='audit'),
+    
     #hey i have changed on url
 ]
