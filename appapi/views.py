@@ -527,7 +527,7 @@ def create_person_with_candidation(request):
 
             message = f"Dear {person_instance.firstname},\n\n"\
                       f"Congratulations on successfully registering as a candidate for the upcoming election.\n\n"\
-                      f"Please note your candidate ID for future reference: [Candidate ID]\n\n"\
+                      f"Please note your candidate ID for future reference: {candidate_instance.id}\n\n"\
                       f"Before [Date], as announced on our website, you are required to visit the Election Commissioner's office for verification and confirmation of your candidacy. Please ensure you bring all necessary documents as outlined in the Election Process & Guidelines available on the iMatdaan website.\n\n"\
                       f"For any questions or assistance, please contact us directly.\n\n"\
                       f"Thank you for your participation in the electoral process.\n\n"\
