@@ -640,9 +640,21 @@ class ElectionDataListCreate(generics.ListCreateAPIView):
                     voter.status = 1  # You should replace this with your logic to update status
                     voter.save()
                     print(voter.person.email)
+
+                    subject = 'Thank You for Voting!'
+
+                    message =   f"Dear {voter.person.firstname},\n\n"\
+                                f"We are pleased to inform you that your vote has been successfully recorded in the recent election. Your participation is a crucial part of the democratic process, and we appreciate your commitment to making your voice heard.\n\n"\
+                                f"Your EPIC ID: {voter.epic}\n\n"\
+                                f"Please keep this EPIC ID safe for future reference.\n\n"\
+                                f"Thank you for exercising your right to vote and for being an active participant in shaping our democracy.\n\n"\
+                                f"For any further information or assistance, please visit our website or contact us directly.\n\n"\
+                                f"Best regards,\n"\
+                                f"iMatdaan Team"
+
                     send_mail(
-                       'Your vote has been recorded',
-                        'Dear voter, your vote has been successfully recorded.',
+                        subject,
+                        message,
                         'settings.EMAIL_HOST_USER',  # Use a no-reply email address
                         [voter.person.email],
                         fail_silently=False
