@@ -21,6 +21,10 @@ import os
 import time
 import json
 
+from django.core.mail import send_mail
+from django.conf import settings
+from django.http import Http404
+
 
 blockchain_url = 'https://sepolia.infura.io/v3/ab071685741847ff8ab969312efc0cfe'
 
@@ -429,6 +433,18 @@ def personvoter(request):
                 epic_id_data = EpicIdData.objects.get(epic_id=data['epic'])
                 epic_id_data.allotted = True
                 epic_id_data.save()
+
+                # Construct the email message
+                message = f"Dear {data['firstname']},\n\nCongratulations! Your voter registration has been successfully processed.\n\nHere are the details of your registration:\n- EPIC ID: {data['epic']}\n\nThank you for participating in the electoral process. Your vote counts!\n\nSincerely,\nImatdaan"
+                print(message)
+                print(data['email'])
+                send_mail(
+                    'Voter Registration Successful',
+                    message,
+                    'settings.EMAIL_HOST_USER',  # Use a no-reply email address
+                    [data['email']],
+                    fail_silently=False
+                )
                 
                 return Response({'message': 'Person created successfully'}, status=201)
             except Exception as e:
@@ -507,9 +523,7 @@ class MachineRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
         self.perform_update(serializer)
         return Response(serializer.data)
     
-from django.core.mail import send_mail
-from django.conf import settings
-from django.http import Http404
+
 class ElectionDataListCreate(generics.ListCreateAPIView):
     queryset = ElectionData.objects.all()
     serializer_class = ElectionDataSerializer
