@@ -435,11 +435,21 @@ def personvoter(request):
                 epic_id_data.save()
 
                 # Construct the email message
-                message = f"Dear {data['firstname']},\n\nCongratulations! Your voter registration has been successfully processed.\n\nHere are the details of your registration:\n- EPIC ID: {data['epic']}\n\nThank you for participating in the electoral process. Your vote counts!\n\nSincerely,\nImatdaan"
-                print(message)
+                subject = f"Voter Registration Successful - {data['epic']}"
+
+                message = f"Dear {data['firstname']},\n\n"\
+                        f"We are pleased to inform you that your voter registration for the upcoming election has been successful. Your EPIC ID CARD has been generated, which you will need to present at the polling station on the day of the election.\n\n"\
+                        f"Your EPIC ID: {data['epic']}\n\n"\
+                        f"Please keep this EPIC ID safe, as it will be required for verification during the voting process.\n\n"\
+                        f"For any further information or assistance, please visit our website or contact us directly.\n\n"\
+                        f"Thank you for participating in the democratic process.\n\n"\
+                        f"Best regards,\n"\
+                        f"iMatdaan Team"
+            
+
                 print(data['email'])
                 send_mail(
-                    'Voter Registration Successful',
+                    subject,
                     message,
                     'settings.EMAIL_HOST_USER',  # Use a no-reply email address
                     [data['email']],
@@ -458,12 +468,84 @@ def candidate_count(request):
 @api_view(['POST'])
 def create_person_with_candidation(request):
     if request.method == 'POST':
+
+        # data = request.data
+        # print(data)
+        # try:
+        #     person = Person.objects.create(
+        #         firstname=data['firstname'],
+        #         lastname=data['lastname'],
+        #         dob=data['dob'],
+        #         gender=data['gender'],
+        #         adhaar=data['adhaar'],
+        #         email=data['email'],
+        #         phone=data['phone']
+        #     )
+
+        #     candidate = Candidate.objects.create(
+        #         party= data['party'],
+        #         manifesto= data['manifesto'],
+        #         image=data['image'],
+        #         accepted=data['accepted'],
+        #     )
+            
+            # Construct the email message
+            # subject = 'Candidate Registration Successful - Verification Required'
+
+            # message = f"Dear {data['firstname']},\n\n"\
+            #           f"Congratulations on successfully registering as a candidate for the upcoming election.\n\n"\
+            #           f"Please note your candidate ID for future reference: [Candidate ID]\n\n"\
+            #           f"Before [Date], as announced on our website, you are required to visit the Election Commissioner's office for verification and confirmation of your candidacy. Please ensure you bring all necessary documents as outlined in the Election Process & Guidelines available on the iMatdaan website.\n\n"\
+            #           f"For any questions or assistance, please contact us directly.\n\n"\
+            #           f"Thank you for your participation in the electoral process.\n\n"\
+            #           f"Best regards,\n"\
+            #           f"iMatdaan Team"
+        
+
+            # print(data['email'])
+            # send_mail(
+            #     subject,
+            #     message,
+            #     'settings.EMAIL_HOST_USER',  # Use a no-reply email address
+            #     [data['email']],
+            #     fail_silently=False
+            # )
+            
+        #     return Response({'message': 'Person with candidation created successfully!!'}, status=status.HTTP_201_CREATED)
+        # except Exception as e:
+        #     return Response({'error': 'Invalid data'}, status=status.HTTP_400_BAD_REQUEST)
+
+             
         person_serializer = PersonSerializer(data=request.data)
         candidate_serializer = CandidateSerializer(data=request.data)
-
         if person_serializer.is_valid() and candidate_serializer.is_valid():
             person_instance = person_serializer.save()
             candidate_instance = candidate_serializer.save(person=person_instance)
+            
+
+            subject = 'Candidate Registration Successful - Verification Required'
+
+            message = f"Dear {person_instance.firstname},\n\n"\
+                      f"Congratulations on successfully registering as a candidate for the upcoming election.\n\n"\
+                      f"Please note your candidate ID for future reference: [Candidate ID]\n\n"\
+                      f"Before [Date], as announced on our website, you are required to visit the Election Commissioner's office for verification and confirmation of your candidacy. Please ensure you bring all necessary documents as outlined in the Election Process & Guidelines available on the iMatdaan website.\n\n"\
+                      f"For any questions or assistance, please contact us directly.\n\n"\
+                      f"Thank you for your participation in the electoral process.\n\n"\
+                      f"Best regards,\n"\
+                      f"iMatdaan Team"
+            
+
+            print(message)
+            print(person_instance.email)
+
+            send_mail(
+                subject,
+                message,
+                'settings.EMAIL_HOST_USER',  # Use a no-reply email address
+                [person_instance.email],
+                fail_silently=False
+            )
+            
             return Response({'message': 'Person with candidation created successfully!!'}, status=status.HTTP_201_CREATED)
         else:
             return Response({'error': 'Invalid data'}, status=status.HTTP_400_BAD_REQUEST)
