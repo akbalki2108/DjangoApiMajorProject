@@ -4,6 +4,7 @@ __pycache__/
 *$py.class
 /appapi/__pycache__/
 
+csv/
 # # Distribution / packaging
 # .Python
 # build/
